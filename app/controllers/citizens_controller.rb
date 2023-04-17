@@ -7,7 +7,7 @@ class CitizensController < ApplicationController
   end
 
   def new
-    @citizen.build_address
+    @citizen.build_address unless params[:render_errors]
   end
 
   def edit
@@ -21,7 +21,7 @@ class CitizensController < ApplicationController
       redirect_to root_path
     else
       flash[:error] = 'Erro ao salvar. Tente novamente!'
-      redirect_to new_citizen_path(citizen: object_params, render_errors: true)
+      redirect_to new_citizen_path(citizen: object_params.except(:picture), render_errors: true)
     end
   end
 

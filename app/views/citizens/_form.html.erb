@@ -64,7 +64,7 @@
         </label>
         <%= f.file_field :picture, id: "imgInp", value: @citizen.picture, required: !@citizen.picture.attached? %>
         <% if @citizen.picture.attached? %>
-          <%= image_tag(@citizen.picture, style: "height:200px") %>
+          <%= image_tag(@citizen.picture, style: "height:200px", direct_upload: true) %>
         <% end %>
         <img id="preview" src="#" alt="your image" style="height: 200px" />
       </div>

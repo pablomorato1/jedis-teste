@@ -36,9 +36,9 @@ class Citizen < ApplicationRecord
   end
 
   def send_welcome
-    #Thread.new do
-      # ApplicationMailer.welcome(self).deliver_now
+    Thread.new do
+      ApplicationMailer.welcome(self).deliver_now
       TwilioMessengerService.new('Cadastro realizado com sucesso! Jedis Team', phone_number).call
-    #end
+    end
   end
 end
