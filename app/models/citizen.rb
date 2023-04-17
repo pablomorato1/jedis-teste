@@ -11,8 +11,8 @@ class Citizen < ApplicationRecord
   validates :cpf, :cns, :email, uniqueness: true
   validate :cpf_is_valid?, :email_is_valid?, :cns_is_valid?, :birth_date_valid?
 
-  #after_create :send_welcome
-  #after_update :send_welcome
+  after_create :send_welcome
+  after_update :send_welcome
 
   def cpf_is_valid?
     return errors.add(:cpf, 'CPF invalido') unless CPF.valid?(cpf)
@@ -33,5 +33,12 @@ class Citizen < ApplicationRecord
     actual_year = DateTime.now.year
 
     return errors.add(:birth_date, 'Data de nascimento invalida') if year > actual_year || (actual_year - year) > 120
+  end
+
+  def send_welcome
+    #Thread.new do
+      # ApplicationMailer.welcome(self).deliver_now
+      TwilioMessengerService.new('Cadastro realizado com sucesso! Jedis Team', phone_number).call
+    #end
   end
 end
