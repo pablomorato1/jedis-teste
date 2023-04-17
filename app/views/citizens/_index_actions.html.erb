@@ -1,0 +1,43 @@
+<td class="text-center">
+  <%  %>
+  <% if has_action? :copy %>
+    <%= link_to raw("<i class='mdi mdi-content-copy'></i>"), send(@config[:copy_action_helper], object), class: 'btn btn-primary copy' if send(@config[:copy_action_helper], object).present? %>
+  <% end %>
+  <% if has_action? :preview %>
+    <%= link_to self.send("#{@config[:model]}_path", object), method: :get, target: :blank, class: 'btn btn-simple btn-primary btn-icon' do %>
+      <i class="mdi mdi-eye"></i>
+    <% end %>
+  <% end %>
+  <% if has_action? :impersonate %>
+    <%= link_to self.send("impersonate_#{@config[:model]}_path", object), method: :put, class: 'btn btn-simple btn-primary btn-icon remove' do %>
+      <i class="mdi mdi-home"></i>
+    <% end %>
+  <% end %>
+  <% if has_action?(:duplicate) && @config[:duplicate_path].present? %>
+    <%= link_to send(@config[:duplicate_path], object), method: :put, class: "btn btn-simple btn-primary btn-icon", data: { confirm: t('form.confirm_duplication') } do %>
+      <i class="mdi mdi-plus-circle-multiple-outline"></i>
+    <% end %>
+  <% end %>
+  <% if has_action?(:object_url) && @config[:object_url_field].present? %>
+    <%= link_to field_value(object, @config[:object_url_field]), target: :blank, class: 'btn btn-simple btn-primary btn-icon' do %>
+      <i class="mdi mdi-open-in-new"></i>
+    <% end if field_value(object, @config[:object_url_field]).present? %>
+  <% end %>
+  <% if has_action? :show %>
+    <%= link_to self.send("#{@config[:model]}_path", object), method: :get, target: :blank, class: 'btn btn-simple btn-primary btn-icon' do %>
+      <i class="mdi mdi-eye"></i>
+    <% end %>
+  <% end %>
+  <% if has_action? :edit %>
+    <%= link_to self.send("edit_#{@config[:model]}_path", object), class: 'btn btn-simple btn-primary btn-icon' do %>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil" viewBox="0 0 16 16">
+        <path d="M12.146.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1 0 .708l-10 10a.5.5 0 0 1-.168.11l-5 2a.5.5 0 0 1-.65-.65l2-5a.5.5 0 0 1 .11-.168l10-10zM11.207 2.5 13.5 4.793 14.793 3.5 12.5 1.207 11.207 2.5zm1.586 3L10.5 3.207 4 9.707V10h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.293l6.5-6.5zm-9.761 5.175-.106.106-1.528 3.821 3.821-1.528.106-.106A.5.5 0 0 1 5 12.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.468-.325z"/>
+      </svg>
+    <% end %>
+  <% end %>
+  <% if has_action? :destroy %>
+    <%= link_to self.send("#{@config[:model]}_path", object), method: :delete, remote: true, class: 'btn btn-simple btn-danger btn-icon remove', data: { confirm: t('form.confirm_delete') } do %>
+      <i class="mdi mdi-delete"></i>
+    <% end %>
+  <% end %>
+</td>

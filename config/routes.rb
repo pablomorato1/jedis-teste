@@ -3,4 +3,7 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   root "citizens#index"
+
+  resources :citizens
+  resources :addresses
 end

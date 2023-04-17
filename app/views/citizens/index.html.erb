@@ -1,1 +1,54 @@
-<h1>test</h1>
+<%= link_to path_to_new(params[:controller]), class: 'btn btn-primary btn-lg', data: {} do %>
+  <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+    <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+    <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+  </svg> Cadastrar Munícipe
+<% end if is_action?('index') %>
+
+<div class="citizens">
+  <% if @collection.any? %>
+    <table id="table" class="table table-striped table-no-bordered table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th> ID </th>
+          <th> Nome </th>
+          <th> CPF </th>
+          <th> CNS </th>
+          <th> Telefone </th>
+          <th> Cidade </th>
+          <th> UF </th>
+          <th> Status </th>
+          <% if @config[:index_actions].present? %>
+            <th width="20%" class="text-center">Ações</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% @collection.each do |object| %>
+          <tr id="<%= dom_id(object) %>" >
+            <td><%= object.id %></td>
+            <td><%= object.full_name %></td>
+            <td><%= "#{object.cpf.first(3)}.***.***-#{object.cpf.last(2)}"%></td>
+            <td><%= "#{object.cns.first(3)}************"%></td>
+            <td><%= "(#{object.phone_number.first(2)}) *****-#{object.phone_number.last(4)}"%></td>
+            <td> <%= object&.address&.city %> </td>
+            <td> <%= object&.address&.state %> </td>
+            <td> <%= object.active ? "Ativo" : "Inativo" %> </td>
+            <% if @config[:index_actions].present? %>
+              <%= render "citizens/index_actions", object: object %>
+            <% end %>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% elsif @config[:not_found_message].present? %>
+    <div class="alert ptm pbm text-center text-dark h4">
+      <%= @config[:not_found_message] %>
+    </div>
+  <% else %>
+    <div class="alert ptm pbm text-center text-dark h4">
+      Nenhum registro encontrado
+    </div>
+  <% end %>
+</div>
+<%= render_paginate @collection, "full" %>
