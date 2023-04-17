@@ -52,10 +52,17 @@
       </div>
 
       <div class="input">
+        <label for="citizen_active">
+          Usuário ativo? <%= f.check_box :active %>
+        </label>
+
+      </div>
+
+      <div class="input">
         <label for="citizen_picture">
           Foto
         </label>
-        <%= f.file_field :picture, id: "imgInp", value: @citizen.picture, required: true %>
+        <%= f.file_field :picture, id: "imgInp", value: @citizen.picture, required: !@citizen.picture.attached? %>
         <% if @citizen.picture.attached? %>
           <%= image_tag(@citizen.picture, style: "height:200px") %>
         <% end %>
@@ -101,6 +108,12 @@
             Complemento
           </label>
             <%= address_form.text_field :complement %>
+        </div>
+        <div class="input">
+          <label for="citizen_address_attributes_complement">
+            Código IBGE
+          </label>
+            <%= address_form.text_field :ibge %>
         </div>
       <% end %>
 

@@ -1,7 +1,7 @@
 class CitizensController < ApplicationController
   before_action :collection, only: :index
   before_action :config_fields
-  before_action :citizen, only: [:new, :create, :edit]
+  before_action :citizen, only: [:new, :create, :edit, :update]
 
   def index
   end
@@ -25,19 +25,20 @@ class CitizensController < ApplicationController
     end
   end
 
+  def update
+    if @citizen.update(object_params)
+      redirect_to root_path
+    else
+      redirect_to action: :edit
+    end
+  end
+
   private
 
   def config_fields
     @config = {
       model: :citizen,
       index_actions: [:edit],
-      duplicate_path: "duplicate_manager_course_path",
-      form_fields: [
-        { name: :name },
-        { name: :description, type: :text },
-        { name: :enabled, type: :boolean },
-        { name: :visible, type: :boolean },
-      ]
     }
   end
 
@@ -47,7 +48,7 @@ class CitizensController < ApplicationController
 
   def object_params
     params.fetch(:citizen, {}).permit(:full_name, :cpf, :cns, :email, :birth_date, :phone_number, :picture,
-                  address_attributes: %i[id cep street neighborhood city state complement])
+                  :active, address_attributes: %i[id cep street neighborhood city state complement ibge])
   end
 
   def citizen
